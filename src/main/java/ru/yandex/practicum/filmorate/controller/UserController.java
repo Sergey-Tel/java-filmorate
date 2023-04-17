@@ -26,11 +26,6 @@ public class UserController {
         return users.values();
     }
 
-    @GetMapping
-    public String homePage() {
-        log.debug("Получен запрос GET /home.");
-        return "приложение запущено";
-    }
 
     @PostMapping
     public User createUser(@Valid @RequestBody User user) {

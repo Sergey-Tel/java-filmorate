@@ -25,11 +25,7 @@ public class FilmController {
         log.debug("Получение списка всех доступных фильмов");
         return films.values();
     }
-    @GetMapping
-    public String homePage() {
-        log.debug("Получен запрос GET /home.");
-        return "приложение запущено";
-    }
+
     @PostMapping
     public Film createFilm(@Valid @RequestBody Film film) {
         log.debug("Создание нового фильма");
