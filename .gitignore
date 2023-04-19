@@ -42,5 +42,9 @@ build/
 ### VS Code ###
 .vscode/
 
+/.mvn
+/mvnw.cmd
+/mvnw
+
 *.db
 db/*
