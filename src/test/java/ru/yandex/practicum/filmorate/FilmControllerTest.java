@@ -35,6 +35,7 @@ public class FilmControllerTest {
                     .duration(100).build());
         });
     }
+
     @Test()
     void checkFilmDescription() {
         String description = StringUtils.repeat("a", 250);
@@ -47,6 +48,7 @@ public class FilmControllerTest {
                     .duration(100).build());
         });
     }
+
     @Test()
     void checkFilmDuration() {
         Assertions.assertThrows(ValidationException.class, () -> {
