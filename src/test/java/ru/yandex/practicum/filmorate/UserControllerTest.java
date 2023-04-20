@@ -27,14 +27,13 @@ class UserControllerTest {
 
     @Test
     void checkUserName() {
-        Assertions.assertThrows(ValidationException.class, () -> {
-            userController.createUser(User.builder()
-                    .id(1)
-                    .email("myMail@.ru")
-                    .login("lg")
-                    .name("")
-                    .birthday(LocalDate.now()).build());
-        });
+        User user = userController.createUser(User.builder()
+                .id(1)
+                .email("email@ya.ru")
+                .login("lg")
+                .birthday(LocalDate.EPOCH)
+                .build());
+        Assertions.assertEquals(user.getName(), user.getLogin());
     }
 
     @Test
