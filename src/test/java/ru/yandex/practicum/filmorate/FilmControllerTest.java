@@ -1,63 +1,69 @@
 package ru.yandex.practicum.filmorate;
 
-import org.apache.commons.lang3.StringUtils;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.constraints.NotEmpty;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.yandex.practicum.filmorate.controller.FilmController;
+import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.validation.ValidationException;
 
 import java.time.LocalDate;
+import java.util.Set;
 
+@SpringBootTest
 public class FilmControllerTest {
-    FilmController filmController = new FilmController();
+    private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
 
     @Test()
+    @DisplayName("Проверка name на ошибки")
     void checkFilmName() {
-        Assertions.assertThrows(ValidationException.class, () -> {
-            filmController.createFilm(Film.builder()
-                    .id(1)
-                    .name("")
-                    .description("desc")
-                    .releaseDate(LocalDate.EPOCH)
-                    .duration(100).build());
-        });
+        Film film1 = createFilm(" ", "description", LocalDate.EPOCH, 10);
+        Film film2 = createFilm(null, "description", LocalDate.EPOCH, 10);
+
+        Assertions.assertAll(
+                () -> Assertions.assertTrue(checkFilm(film1, "название не может быть пустым")),
+                () -> Assertions.assertTrue(checkFilm(film2, "название не может быть пустым"))
+        );
     }
 
     @Test()
+    @DisplayName("Проверка ReleaseDate на ошибки")
     void checkFilmReleaseDate() {
-        Assertions.assertThrows(ValidationException.class, () -> {
-            filmController.createFilm(Film.builder()
-                    .id(1)
-                    .name("abc")
-                    .description("desc")
-                    .releaseDate(LocalDate.of(1800,10,20))
-                    .duration(100).build());
-        });
+        Film film = createFilm("nameOfFilm", "description", LocalDate.of(1800,10,10), 10);
+        Assertions.assertTrue(checkFilm(film, "Дата релиза не может быть раньше 28 декабря 1895 года"));
     }
 
     @Test()
+    @DisplayName("Проверка Description на ошибки")
     void checkFilmDescription() {
-        String description = StringUtils.repeat("a", 250);
-        Assertions.assertThrows(ValidationException.class, () -> {
-            filmController.createFilm(Film.builder()
-                    .id(1)
-                    .name("abc")
-                    .description(description)
-                    .releaseDate(LocalDate.EPOCH)
-                    .duration(100).build());
-        });
+        Film film = createFilm("nameOfFilm", new String(new char[200]), LocalDate.EPOCH, 5);
+
+        Assertions.assertTrue(checkFilm(film, "максимальная длина описания — 200 символов"));
+
     }
 
+    @DisplayName("Проверка Duration на ошибки")
     @Test()
     void checkFilmDuration() {
-        Assertions.assertThrows(ValidationException.class, () -> {
-            filmController.createFilm(Film.builder()
-                    .id(1)
-                    .name("abc")
-                    .description("abc")
-                    .releaseDate(LocalDate.EPOCH)
-                    .duration(-10).build());
-        });
+        Film film = createFilm("nameOfFilm", "description", LocalDate.EPOCH, -10);
+
+        Assertions.assertTrue(checkFilm(film, "продолжительность фильма должна быть положительной"));
+    }
+
+    private Film createFilm(String name, String description, LocalDate releaseDate, int duration) {
+        return Film.builder()
+                .name(name)
+                .description(description)
+                .releaseDate(releaseDate)
+                .duration(duration)
+                .build();
+    }
+
+    private boolean checkFilm(Film film, @NotEmpty String message) {
+        Set<ConstraintViolation<Film>> errors = VALIDATOR.validate(film);
+        return errors.stream().map(ConstraintViolation::getMessage).anyMatch(message::equals);
     }
 }
