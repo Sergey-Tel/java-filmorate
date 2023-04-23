@@ -1,6 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import jakarta.validation.Valid;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -9,52 +9,54 @@ import ru.yandex.practicum.filmorate.exception.UserValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
+import javax.validation.Valid;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+
 
 @Slf4j
 @RestController
 @RequestMapping("/users")
 public class UserController {
     private final UserService service = new UserService();
-
-    private int userId;
-    private int getId() {
-        return ++userId;
-    }
+    private int count;
 
     @GetMapping
-    public Collection<User> findAllUsers() {
-        log.debug("Полечение списка всех пользователей");
-        return service.findAllUsers();
+    public List<User> getUsers() {
+        log.debug("Выданы все пользователи");
+        return service.getUsers();
     }
 
-
     @PostMapping
-    public User createUser(@Valid @RequestBody User user,BindingResult bindingResult) {
-       validateUser(bindingResult);
-        int userId = getId();
-        User userForSave = service.createUser(userId,user);
-        log.debug("Пользователем с новым id - " + userId + " добавлен");
-        return userForSave;
+    public User addUser(@RequestBody @Valid User user, BindingResult bindingResult) {
+        validateUser(bindingResult);
+        int id = getId();
+        User saveUser = service.addUser(id, user);
+        log.debug("Новый пользователь добавлен. Выданный id = " + id);
+        return saveUser;
     }
 
     @PutMapping
-    public User updateUser(@Valid @RequestBody User user,BindingResult bindingResult) {
+    public User updateUser(@RequestBody @Valid User user, BindingResult bindingResult) {
         validateUser(bindingResult);
-        int userId = user.getId();
+        int id = user.getId();
 
-        if (!service.isContains(userId)) {
-            log.debug("Данного пользователся не существует");
+        //Не отправляем данные сервису, пока не убедимся в необходимости этого
+        if (!service.isContains(id)) {
+            log.debug("Пользователь не может быть обновлен, так как отсутствует в базе данных");
             throw new UserUpdateException();
         }
-        User userForUpdate = service.updateUser(userId,user);
-        log.debug("Пользователь с номером - " + userId + " был обновлен");
-        return userForUpdate;
+
+        User saveUser = service.updateUser(id, user);
+        log.debug("Пользователь с id = " + id + " был обновлен");
+        return saveUser;
     }
 
+    private int getId() {
+        return ++count;
+    }
+
+    //Для подробной записи ошибок в лог
     private void validateUser(BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors("email")) {
             log.debug("Ошибка валидации пользователя. Неверный email");

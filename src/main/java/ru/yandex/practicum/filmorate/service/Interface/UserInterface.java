@@ -5,7 +5,7 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.util.List;
 
 public interface UserInterface {
-    User createUser(int id,User user);
+    User addUser(int id,User user);
     User updateUser(int id,User user);
-    List<User> findAllUsers();
+    List<User> getUsers();
 }

@@ -12,7 +12,7 @@ public class UserService implements UserInterface {
     private final Map<Integer, User> users = new HashMap<>();
 
     @Override
-    public User createUser(int id, User user) {
+    public User addUser(int id, User user) {
         User saveUser = validateName(user);
         saveUser.setId(id);
         users.put(id, saveUser);
@@ -27,7 +27,7 @@ public class UserService implements UserInterface {
     }
 
     @Override
-    public List<User> findAllUsers() {
+    public List<User> getUsers() {
         return new ArrayList<>(users.values());
     }
 

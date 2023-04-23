@@ -1,6 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import jakarta.validation.Valid;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -9,54 +9,56 @@ import ru.yandex.practicum.filmorate.exception.FilmValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
+import javax.validation.Valid;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+
 
 @Slf4j
 @RestController
 @RequestMapping("/films")
 public class FilmController {
-
     private final FilmService service = new FilmService();
-    private int filmId;
-
-    private int getId() {
-        return ++filmId;
-    }
+    private int count;
 
     @GetMapping
-    public Collection<Film> findAllFilms() {
-        log.debug("Получение списка всех доступных фильмов");
-        return service.findAllFilms();
+    public List<Film> getFilms() {
+        log.debug("Выданы все фильмы");
+        return service.getFilms();
     }
 
     @PostMapping
-    public Film createFilm(@Valid @RequestBody Film film, BindingResult bindingResult) {
-        validateFilm(bindingResult);
-        int FilmId = getId();
-        Film filmForSave = service.createFilm(FilmId, film);
-        log.debug("Добавлен новый фильм. Номер фильма - " + FilmId);
-        return filmForSave;
+    public Film addFilm(@RequestBody @Valid Film film, BindingResult bindingResult) {
+        validate(bindingResult);
+        int id = getId();
+        Film saveFilm = service.addFilm(id, film);
+        log.debug("Новый фильм добавлен. Выданный id = " + id);
+        return saveFilm;
     }
 
     @PutMapping
-    public Film updateFilm(@Valid @RequestBody Film film, BindingResult bindingResult) {
-        validateFilm(bindingResult);
+    public Film updateFilm(@RequestBody @Valid Film film, BindingResult bindingResult) {
+        validate(bindingResult);
 
-        int filmId = film.getId();
+        int id = film.getId();
 
-        if (!service.isContains(filmId)) {
-            log.debug("Ошибка обновления фильма, данный фильм отсутствует в базе данных");
+        //Не отправляем данные сервису, пока не убедимся в необходимости этого
+        if (!service.isContains(id)) {
+            log.debug("Фильм не может быть обновлен, так как отсутвтвует в базе данных");
             throw new FilmUpdateException();
         }
-        service.updateFilm(filmId, film);
-        log.debug("Фильм с номером - " + filmId + " Отсутствует");
+
+        service.updateFilm(id, film);
+        log.debug("Фильм с id = " + id + " был обновлен");
         return film;
     }
 
-    private void validateFilm(BindingResult bindingResult) {
+    private int getId() {
+        return ++count;
+    }
+
+    //Для подробной записи ошибок в лог
+    private void validate(BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors("name")) {
             log.debug("Ошибка валидации фильма. Название фильма не может быть пустым");
             throw new FilmValidationException();

@@ -1,16 +1,16 @@
 package ru.yandex.practicum.filmorate.validator;
 
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
-import ru.yandex.practicum.filmorate.validator.Annotation.WithoutSpaces;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import ru.yandex.practicum.filmorate.validator.Annotation.NoSpaces;
 
-public class SpaceValidator implements ConstraintValidator<WithoutSpaces, String> {
+public class SpaceValidator implements ConstraintValidator<NoSpaces, String> {
     private static final String CONTAINS_CHAR = " ";
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
 
-
+        //Отлавливаем другой анотацией
         if (s == null) {
             return true;
         }

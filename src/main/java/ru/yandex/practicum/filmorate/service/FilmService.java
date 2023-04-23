@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
+
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.Interface.FilmInterface;
 
@@ -9,11 +10,10 @@ import java.util.List;
 import java.util.Map;
 
 public class FilmService implements FilmInterface {
-
     private final Map<Integer, Film> films = new HashMap<>();
 
     @Override
-    public Film createFilm(int id, Film film) {
+    public Film addFilm(int id, Film film) {
         film.setId(id);
         films.put(id, film);
         return film;
@@ -26,7 +26,7 @@ public class FilmService implements FilmInterface {
     }
 
     @Override
-    public List<Film> findAllFilms() {
+    public List<Film> getFilms() {
         return new ArrayList<>(films.values());
     }
 

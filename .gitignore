@@ -10,7 +10,7 @@
 hs_err_pid*
 out/
 target/
-!.mvn/wrapper/maven-wrapper.jar
+!../Спринты java проекты для копирования/java-filmorate-5/.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
