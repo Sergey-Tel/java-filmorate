@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface UserInterface {
     User addUser(int id,User user);
+
     User updateUser(int id,User user);
+
     List<User> getUsers();
 }
