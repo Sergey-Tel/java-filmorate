@@ -14,7 +14,7 @@ public class User {
     @Email(message = "Email введен с ошибкой")
     private String email;
 
-    //@NotBlank не нужен, так как @NoSpaces отловит все возможные комбинации пробелов
+
     @NotNull(message = "Логин не может быть пустым")
     @NoSpaces
     private String login;

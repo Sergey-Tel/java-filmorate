@@ -41,7 +41,7 @@ public class UserController {
         validateUser(bindingResult);
         int id = user.getId();
 
-        //Не отправляем данные сервису, пока не убедимся в необходимости этого
+
         if (!service.isContains(id)) {
             log.debug("Пользователь не может быть обновлен, так как отсутствует в базе данных");
             throw new UserUpdateException();
@@ -56,7 +56,7 @@ public class UserController {
         return ++count;
     }
 
-    //Для подробной записи ошибок в лог
+
     private void validateUser(BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors("email")) {
             log.debug("Ошибка валидации пользователя. Неверный email");

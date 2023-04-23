@@ -42,7 +42,7 @@ public class FilmController {
 
         int id = film.getId();
 
-        //Не отправляем данные сервису, пока не убедимся в необходимости этого
+
         if (!service.isContains(id)) {
             log.debug("Фильм не может быть обновлен, так как отсутвтвует в базе данных");
             throw new FilmUpdateException();
@@ -57,7 +57,7 @@ public class FilmController {
         return ++count;
     }
 
-    //Для подробной записи ошибок в лог
+
     private void validate(BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors("name")) {
             log.debug("Ошибка валидации фильма. Название фильма не может быть пустым");

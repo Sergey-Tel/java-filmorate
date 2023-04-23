@@ -10,7 +10,7 @@ public class SpaceValidator implements ConstraintValidator<NoSpaces, String> {
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
 
-        //Отлавливаем другой анотацией
+
         if (s == null) {
             return true;
         }
