@@ -14,6 +14,7 @@ import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
 import ru.yandex.practicum.filmorate.model.ErrorResponse;
 import ru.yandex.practicum.filmorate.model.ValidationErrorResponse;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -37,11 +38,8 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ValidationErrorResponse handleBindException(MethodArgumentNotValidException exp) {
-        Map<String, String> errors = exp.getBindingResult().getFieldErrors().stream()
-                .collect(Collectors.toMap(FieldError::getField,
-                        Objects.requireNonNull(DefaultMessageSourceResolvable::getDefaultMessage)));
-        log.error(errors.toString());
-        return new ValidationErrorResponse(errors);
+        log.error(exp.getMessage());
+        return new ValidationErrorResponse(Collections.singletonMap("error:", exp.getMessage()));
     }
 
     @ExceptionHandler
