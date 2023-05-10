@@ -6,9 +6,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.yandex.practicum.filmorate.exception.FilmNotFoundException;
-import ru.yandex.practicum.filmorate.exception.IncorrectParameterException;
-import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
+import ru.yandex.practicum.filmorate.exception.*;
 import ru.yandex.practicum.filmorate.model.ErrorResponse;
 import ru.yandex.practicum.filmorate.model.ValidationErrorResponse;
 
@@ -24,9 +22,22 @@ public class ErrorHandler {
         return new ErrorResponse(exp.getMessage());
     }
 
-    @ExceptionHandler({FilmNotFoundException.class, UserNotFoundException.class})
+    @ExceptionHandler({FilmNotFoundException.class, UserNotFoundException.class,
+            MpaNotFoundException.class, GenreNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleFilmNotFound(final RuntimeException exp) {
+        return new ErrorResponse(exp.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.ALREADY_REPORTED)
+    public ErrorResponse handleDuplicateLike(final DuplicateLikeException exp) {
+        return new ErrorResponse(exp.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleErrorCountResult(final CountOfResultNotExpectedException exp) {
         return new ErrorResponse(exp.getMessage());
     }
 
@@ -40,8 +51,14 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleThrowable(final Throwable exp) {
-        log.error("Произошла непредвиденная ошибка.");
+        log.error("Произошла непредвиденная ошибка.{}", exp.getMessage(), exp);
         return new ErrorResponse("Произошла непредвиденная ошибка.");
     }
 
 }
+
+
+
+
+
+
