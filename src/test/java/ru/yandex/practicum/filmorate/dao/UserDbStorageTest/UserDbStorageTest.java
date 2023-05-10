@@ -52,7 +52,7 @@ public class UserDbStorageTest {
                 "    USER_NAME  VARCHAR not null," +
                 "    USER_LOGIN VARCHAR not null," +
                 "    BIRTHDAY   DATE    not null," +
-                "    constraint USERS_PK primary key (USER_ID));" ;
+                "    constraint USERS_PK primary key (USER_ID));";
 
         jdbcTemplate.update(sqlQuery);
 
