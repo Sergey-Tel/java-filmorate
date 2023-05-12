@@ -8,11 +8,8 @@ import ru.yandex.practicum.filmorate.exception.IncorrectParameterException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
-
 import javax.validation.Valid;
-
 import java.util.List;
-
 
 @Slf4j
 @RestController
@@ -31,7 +28,7 @@ public class FilmController {
     @PostMapping
     public Film addFilm(@RequestBody @Valid Film film) {
         Film saveFilm = service.addFilm(film);
-        log.debug(String.format("Новый фильм был добавлен. Выданный id =%d", saveFilm.getId()));
+        log.debug(String.format("Новый фильм был добавлен. Выданный id = %d", saveFilm.getId()));
         return saveFilm;
     }
 
@@ -45,8 +42,14 @@ public class FilmController {
     @GetMapping("/{id}")
     public Film getFilm(@PathVariable Integer id) {
         Film saveFilm = service.getFilm(id);
-        log.debug(String.format("Фильм с id =%d был выдан", saveFilm.getId()));
+        log.debug(String.format("Фильм с id = %d был выдан", saveFilm.getId()));
         return saveFilm;
+    }
+
+    @DeleteMapping("/{id}")
+    public void removeFilm(@PathVariable Integer id) {
+        service.removeFilm(id);
+        log.debug(String.format("Фильм с id = %d удален", id));
     }
 
     @PutMapping("/{id}/like/{userId}")
