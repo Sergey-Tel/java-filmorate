@@ -79,6 +79,6 @@ public class FilmService {
     }
 
     private void isFilmContains(Integer id) {
-        filmStorage.isContains(id);
+        filmStorage.checkFilmExists(id);
     }
 }

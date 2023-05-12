@@ -24,5 +24,5 @@ public interface FilmStorage {
 
     List<Film> getPopularFilm(Integer count);
 
-    void isContains(Integer id);
+    void checkFilmExists(Integer id);
 }

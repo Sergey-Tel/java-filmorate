@@ -38,21 +38,21 @@ public class FilmDbStorageTest {
     @BeforeEach
     public void addFilm() {
 
-        Film film1 = createFilm("film1", "char1", "2000-12-27",
+        Film film1 = createFilm("film1", "char1", LocalDate.of(2000,12,27),
                 1, new Mpa(1, "G"),
                 new LinkedHashSet<>(List.of(new Genre(1, "Комедия")))
         );
         filmDbStorage.add(film1);
         genreDbStorage.setFilmGenre(film1);
 
-        Film film2 = createFilm("film2", "char2", "2001-11-25",
+        Film film2 = createFilm("film2", "char2", LocalDate.of(2001,11,25),
                 2, new Mpa(1, "G"),
                 new LinkedHashSet<>()
         );
         filmDbStorage.add(film2);
         genreDbStorage.setFilmGenre(film2);
 
-        Film film3 = createFilm("film3", "char3", "2002-05-06",
+        Film film3 = createFilm("film3", "char3", LocalDate.of(2002,5,6),
                 3, new Mpa(1, "G"),
                 new LinkedHashSet<>(List.of(new Genre(1, "Комедия"),
                         new Genre(2, "Драма")))
@@ -132,7 +132,7 @@ public class FilmDbStorageTest {
         assertEquals(1, film1.getId());
         assertEquals("film1", film1.getName());
         assertEquals("char1", film1.getDescription());
-        assertEquals(LocalDate.parse("2000-12-27"), film1.getReleaseDate());
+        assertEquals(LocalDate.of(2000,12,27), film1.getReleaseDate());
         assertEquals(1, film1.getDuration());
         assertEquals(1, film1.getMpa().getId());
         assertEquals("G", film1.getMpa().getName());
@@ -144,7 +144,7 @@ public class FilmDbStorageTest {
         assertEquals(2, film2.getId());
         assertEquals("film2", film2.getName());
         assertEquals("char2", film2.getDescription());
-        assertEquals(LocalDate.parse("2001-11-25"), film2.getReleaseDate());
+        assertEquals(LocalDate.of(2001,11,25), film2.getReleaseDate());
         assertEquals(2, film2.getDuration());
         assertEquals(1, film2.getMpa().getId());
         assertEquals("G", film2.getMpa().getName());
@@ -155,7 +155,7 @@ public class FilmDbStorageTest {
         assertEquals(3, film3.getId());
         assertEquals("film3", film3.getName());
         assertEquals("char3", film3.getDescription());
-        assertEquals(LocalDate.parse("2002-05-06"), film3.getReleaseDate());
+        assertEquals(LocalDate.of(2002,5,6), film3.getReleaseDate());
         assertEquals(3, film3.getDuration());
         assertEquals(1, film3.getMpa().getId());
         assertEquals("G", film3.getMpa().getName());
@@ -183,7 +183,7 @@ public class FilmDbStorageTest {
         assertEquals(1, filmUpdate.getId());
         assertEquals("Update film1", filmUpdate.getName());
         assertEquals("char1", filmUpdate.getDescription());
-        assertEquals(LocalDate.parse("2000-12-27"), filmUpdate.getReleaseDate());
+        assertEquals(LocalDate.of(2000,12,27), filmUpdate.getReleaseDate());
         assertEquals(1, filmUpdate.getDuration());
         assertEquals(1, filmUpdate.getMpa().getId());
         assertEquals("G", filmUpdate.getMpa().getName());
@@ -203,7 +203,7 @@ public class FilmDbStorageTest {
         assertEquals(1, film1.getId());
         assertEquals("film1", film1.getName());
         assertEquals("char1", film1.getDescription());
-        assertEquals(LocalDate.parse("2000-12-27"), film1.getReleaseDate());
+        assertEquals(LocalDate.of(2000,12,27), film1.getReleaseDate());
         assertEquals(1, film1.getDuration());
         assertEquals(1, film1.getMpa().getId());
         assertEquals("G", film1.getMpa().getName());
@@ -213,7 +213,7 @@ public class FilmDbStorageTest {
         assertEquals(2, film2.getId());
         assertEquals("film2", film2.getName());
         assertEquals("char2", film2.getDescription());
-        assertEquals(LocalDate.parse("2001-11-25"), film2.getReleaseDate());
+        assertEquals(LocalDate.of(2001,11,25), film2.getReleaseDate());
         assertEquals(2, film2.getDuration());
         assertEquals(1, film2.getMpa().getId());
         assertEquals("G", film2.getMpa().getName());
@@ -222,7 +222,7 @@ public class FilmDbStorageTest {
         assertEquals(3, film3.getId());
         assertEquals("film3", film3.getName());
         assertEquals("char3", film3.getDescription());
-        assertEquals(LocalDate.parse("2002-05-06"), film3.getReleaseDate());
+        assertEquals(LocalDate.of(2002,5,6), film3.getReleaseDate());
         assertEquals(3, film3.getDuration());
         assertEquals(1, film3.getMpa().getId());
         assertEquals("G", film3.getMpa().getName());
@@ -233,9 +233,9 @@ public class FilmDbStorageTest {
 
     @Test
     public void operationWithLikes() {
-        userDbStorage.add(createUser("mail@mail.ru", "Nick Name", "name", "1990-08-20"));
-        userDbStorage.add(createUser("yandex@yandex.ru", "Mr Bin", "Bin", "1991-11-23"));
-        userDbStorage.add(createUser("rim@mail.ru", "Rim", "Rimus", "1992-07-21"));
+        userDbStorage.add(createUser("mail@mail.ru", "Nick Name", "name", LocalDate.of(1990,8,20)));
+        userDbStorage.add(createUser("yandex@yandex.ru", "Mr Bin", "Bin", LocalDate.of(1991,11,23)));
+        userDbStorage.add(createUser("rim@mail.ru", "Rim", "Rimus", LocalDate.of(1992,7,21)));
 
 
         filmDbStorage.addLike(1, 1);
@@ -250,11 +250,11 @@ public class FilmDbStorageTest {
 
     @Test
     public void getPopularFilm() {
-        userDbStorage.add(createUser("mail@mail.ru", "Nick Name", "name", "1990-08-20"));
-        userDbStorage.add(createUser("yandex@yandex.ru", "Mr Bin", "Bin", "1991-11-23"));
-        userDbStorage.add(createUser("rim@mail.ru", "Rim", "Rimus", "1992-07-21"));
+        userDbStorage.add(createUser("mail@mail.ru", "Nick Name", "name", LocalDate.of(1990,8,20)));
+        userDbStorage.add(createUser("yandex@yandex.ru", "Mr Bin", "Bin", LocalDate.of(1991,11,23)));
+        userDbStorage.add(createUser("rim@mail.ru", "Rim", "Rimus", LocalDate.of(1992,7,21)));
 
-        //Значение по дефолту - выдаем все 3 фильма - у всех 0 лайков
+
         List<Film> films = genreDbStorage.loadFilmsGenre(filmDbStorage.getPopularFilm(10));
         assertEquals(3, films.size());
 
@@ -265,7 +265,7 @@ public class FilmDbStorageTest {
         assertEquals(1, film1.getId());
         assertEquals("film1", film1.getName());
         assertEquals("char1", film1.getDescription());
-        assertEquals(LocalDate.parse("2000-12-27"), film1.getReleaseDate());
+        assertEquals(LocalDate.of(2000,12,27), film1.getReleaseDate());
         assertEquals(1, film1.getDuration());
         assertEquals(1, film1.getMpa().getId());
         assertEquals("G", film1.getMpa().getName());
@@ -275,7 +275,7 @@ public class FilmDbStorageTest {
         assertEquals(2, film2.getId());
         assertEquals("film2", film2.getName());
         assertEquals("char2", film2.getDescription());
-        assertEquals(LocalDate.parse("2001-11-25"), film2.getReleaseDate());
+        assertEquals(LocalDate.of(2001,11,25), film2.getReleaseDate());
         assertEquals(2, film2.getDuration());
         assertEquals(1, film2.getMpa().getId());
         assertEquals("G", film2.getMpa().getName());
@@ -284,7 +284,7 @@ public class FilmDbStorageTest {
         assertEquals(3, film3.getId());
         assertEquals("film3", film3.getName());
         assertEquals("char3", film3.getDescription());
-        assertEquals(LocalDate.parse("2002-05-06"), film3.getReleaseDate());
+        assertEquals(LocalDate.of(2002,5,6), film3.getReleaseDate());
         assertEquals(3, film3.getDuration());
         assertEquals(1, film3.getMpa().getId());
         assertEquals("G", film3.getMpa().getName());
@@ -302,7 +302,7 @@ public class FilmDbStorageTest {
         assertEquals(2, film2.getId());
         assertEquals("film2", film2.getName());
         assertEquals("char2", film2.getDescription());
-        assertEquals(LocalDate.parse("2001-11-25"), film2.getReleaseDate());
+        assertEquals(LocalDate.of(2001,11,25), film2.getReleaseDate());
         assertEquals(2, film2.getDuration());
         assertEquals(1, film2.getMpa().getId());
         assertEquals("G", film2.getMpa().getName());
@@ -318,7 +318,7 @@ public class FilmDbStorageTest {
         assertEquals(1, film1.getId());
         assertEquals("film1", film1.getName());
         assertEquals("char1", film1.getDescription());
-        assertEquals(LocalDate.parse("2000-12-27"), film1.getReleaseDate());
+        assertEquals(LocalDate.of(2000,12,27), film1.getReleaseDate());
         assertEquals(1, film1.getDuration());
         assertEquals(1, film1.getMpa().getId());
         assertEquals("G", film1.getMpa().getName());
@@ -328,11 +328,11 @@ public class FilmDbStorageTest {
     }
 
 
-    private Film createFilm(String name, String description, String releaseDate, int duration, Mpa mpa, LinkedHashSet<Genre> genres) {
+    private Film createFilm(String name, String description, LocalDate releaseDate, int duration, Mpa mpa, LinkedHashSet<Genre> genres) {
         Film film = new Film();
         film.setName(name);
         film.setDescription(description);
-        film.setReleaseDate(LocalDate.parse(releaseDate));
+        film.setReleaseDate(releaseDate);
         film.setDuration(duration);
         film.setMpa(mpa);
         film.setGenres(genres);

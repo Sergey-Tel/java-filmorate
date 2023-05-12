@@ -38,7 +38,7 @@ public class GenreDbStorage {
         List<Genre> genre = jdbcTemplate.query(sqlQuery, GenreDbStorage::makeGenre, id);
 
         if (genre.isEmpty()) {
-            log.debug(String.format("Genre с id = %d не был найден в базе", id));
+            log.debug("Genre с id = {} не был найден в базе", id);
             throw new GenreNotFoundException(String.format("Genre с id = %d не найден в базе", id));
         }
 

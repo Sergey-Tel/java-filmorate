@@ -18,10 +18,10 @@ public class UsersValidatorTest {
     @Test
     @DisplayName("Проверка невалидности login")
     void addUserWithFailLogin() {
-        User user = createUser("qwerty@Yandex.ru", " ", "Sergo", "2000-10-10");
-        User user1 = createUser("qwerty@Yandex.ru", null, "Sergo", "2000-10-10");
-        User user2 = createUser("qwerty@Yandex.ru", "QW E", "Sergo", "2000-10-10");
-        User user3 = createUser("qwerty@Yandex.ru", "    ", "Sergo", "2000-10-10");
+        User user = createUser("qwerty@Yandex.ru", " ", LocalDate.of(2000,10,10));
+        User user1 = createUser("qwerty@Yandex.ru", null, LocalDate.of(2000,10,10));
+        User user2 = createUser("qwerty@Yandex.ru", "QW E", LocalDate.of(2000,10,10));
+        User user3 = createUser("qwerty@Yandex.ru", "    ", LocalDate.of(2000,10,10));
 
         Assertions.assertAll(
                 () -> Assertions.assertTrue(requestUser(user, "Логин не должен содержать пробелы")),
@@ -35,10 +35,10 @@ public class UsersValidatorTest {
     @Test
     @DisplayName("Проверка невалидности email")
     void addUserWithFailEmail() {
-        User user = createUser("qwertyYandex.ru", "login", "Sergo", "2000-10-10");
-        User user1 = createUser(" ", "login", "Sergo", "2000-10-10");
-        User user2 = createUser(null, "login", "Sergo", "2000-10-10");
-        User user3 = createUser("qwertyYandex@", "login", "Sergo", "2000-10-10");
+        User user = createUser("qwertyYandex.ru", "login", LocalDate.of(2000,10,10));
+        User user1 = createUser(" ", "login", LocalDate.of(2000,10,10));
+        User user2 = createUser(null, "login", LocalDate.of(2000,10,10));
+        User user3 = createUser("qwertyYandex@", "login", LocalDate.of(2000,10,10));
 
         Assertions.assertAll(
                 () -> Assertions.assertTrue(requestUser(user, "Email введен с ошибкой")),
@@ -51,16 +51,16 @@ public class UsersValidatorTest {
     @Test
     @DisplayName("Проверка невалидности birthday")
     void addUserWithFailBirthday() {
-        User user = createUser("qwert@Yandex.ru", "login", "Sergo", "2050-10-10");
+        User user = createUser("qwert@Yandex.ru", "login", LocalDate.of(2050,10,10));
         Assertions.assertTrue(requestUser(user, "Дата рождения не может быть в будущем"));
     }
 
-    private User createUser(String email, String login, String name, String birthday) {
+    private User createUser(String email, String login, LocalDate birthday) {
         User user = new User();
         user.setEmail(email);
         user.setLogin(login);
-        user.setName(name);
-        user.setBirthday(LocalDate.parse(birthday));
+        user.setName("Sergo");
+        user.setBirthday(birthday);
         return user;
     }
 

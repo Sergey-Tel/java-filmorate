@@ -27,7 +27,7 @@ public class MpaDbStorage {
         List<Mpa> mpa = jdbcTemplate.query(sqlQuery, MpaDbStorage::makeMpa, id);
 
         if (mpa.isEmpty()) {
-            log.debug(String.format("MPA с id = %d не был найден в базе", id));
+            log.debug("MPA с id = {} не был найден в базе", id);
             throw new MpaNotFoundException(String.format("MPA с id = %d не найден в базе", id));
         }
 

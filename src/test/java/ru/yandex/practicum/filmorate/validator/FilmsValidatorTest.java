@@ -19,8 +19,8 @@ public class FilmsValidatorTest {
     @Test
     @DisplayName("Проверка невалидности name")
     void addFilmWithFailName() {
-        Film film = createFilm(" ", "description", "2000-10-10", 10);
-        Film film1 = createFilm(null, "description", "2000-10-10", 10);
+        Film film = createFilm(" ", "description", LocalDate.of(2000,10,10), 10);
+        Film film1 = createFilm(null, "description", LocalDate.of(2000,10,10), 10);
 
         Assertions.assertAll(
                 () -> Assertions.assertTrue(requestFilm(film, "Название фильма не может быть пустым")),
@@ -31,8 +31,8 @@ public class FilmsValidatorTest {
     @Test
     @DisplayName("Проверка невалидности description")
     void addFilmWithFailDescription() {
-        Film film = createFilm("filmName", new String(new char[200]), "2000-10-10", 10);
-        Film film1 = createFilm("filmName1", new String(new char[201]), "2000-10-10", 10);
+        Film film = createFilm("filmName", new String(new char[200]), LocalDate.of(2000,10,10), 10);
+        Film film1 = createFilm("filmName1", new String(new char[201]), LocalDate.of(2000,10,10), 10);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(requestFilm(film, "Описание не может превышать 200 символов")),
@@ -43,22 +43,22 @@ public class FilmsValidatorTest {
     @Test
     @DisplayName("Проверка невалидности releaseDate")
     void addFilmWithFailReleaseData() {
-        Film film = createFilm("filmName", "description", "1895-12-27", 10);
+        Film film = createFilm("filmName", "description", LocalDate.of(1895,12,27), 10);
         Assertions.assertTrue(requestFilm(film, "Дата релиза не может быть раньше 28 декабря 1895 года"));
     }
 
     @Test
     @DisplayName("Проверка невалидности duration")
     void addFilmWithFailDuration() {
-        Film film = createFilm("filmName", "description", "2000-10-10", -10);
+        Film film = createFilm("filmName", "description", LocalDate.of(2000,10,10), -10);
         Assertions.assertTrue(requestFilm(film, "Продолжительность фильма не может быть отрицательным"));
     }
 
-    private Film createFilm(String name, String description, String releaseDate, int duration) {
+    private Film createFilm(String name, String description, LocalDate releaseDate, int duration) {
         Film film = new Film();
         film.setName(name);
         film.setDescription(description);
-        film.setReleaseDate(LocalDate.parse(releaseDate));
+        film.setReleaseDate(releaseDate);
         film.setDuration(duration);
         return film;
     }

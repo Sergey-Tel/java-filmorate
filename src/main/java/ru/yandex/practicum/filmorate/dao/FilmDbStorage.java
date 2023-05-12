@@ -71,7 +71,7 @@ public class FilmDbStorage implements FilmStorage {
         final List<Film> films = jdbcTemplate.query(sqlQuery, FilmDbStorage::makeFilm, id);
 
         if (films.size() == 0) {
-            log.debug(String.format("Фильм с id = %d не был найден в базе", id));
+            log.debug("Фильм с id = {} не был найден в базе", id);
             throw new FilmNotFoundException(String.format("Фильм с id = %d не найден в базе", id));
         }
 
@@ -94,7 +94,7 @@ public class FilmDbStorage implements FilmStorage {
                 film.getReleaseDate(), film.getDuration(), film.getMpa().getId(), id);
 
         if (result == 0) {
-            log.debug(String.format("Фильм с id = %d не был найден в базе", id));
+            log.debug("Фильм с id = {} не был найден в базе", id);
             throw new FilmNotFoundException(String.format("Фильм с id = %d не найден в базе", id));
         }
 
@@ -122,7 +122,7 @@ public class FilmDbStorage implements FilmStorage {
             jdbcTemplate.update(sqlQuery, id, idUser);
 
         } catch (DuplicateKeyException exp) {
-            log.debug(String.format("Лайк фильму с id = %d от пользователя с id = %d уже был поставлен", id, idUser));
+            log.debug("Лайк фильму с id = {} от пользователя с id = {} уже был поставлен", id, idUser);
             throw new DuplicateLikeException(String.format("Лайк фильму с id = %d от пользователя с id = %d уже был поставлен", id, idUser));
         }
 
@@ -185,7 +185,7 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     @Override
-    public void isContains(Integer id) {
+    public void checkFilmExists(Integer id) {
 
         final String simpleQuery = "SELECT *" +
                 "FROM FILMS " +
@@ -194,7 +194,7 @@ public class FilmDbStorage implements FilmStorage {
         final List<Film> films = jdbcTemplate.query(simpleQuery, FilmDbStorage::makeSimpleFilm, id);
 
         if (films.size() == 0) {
-            log.debug(String.format("Фильм с id = %d не был найден в базе", id));
+            log.debug("Фильм с id = {} не был найден в базе", id);
             throw new FilmNotFoundException(String.format("Фильм с id = %d не найден в базе", id));
         }
     }

@@ -29,9 +29,9 @@ public class UserDbStorageTest {
 
     @BeforeEach
     public void addUser() {
-        userDbStorage.add(createUser("mail@mail.ru", "Nick Name", "name", "1990-08-20"));
-        userDbStorage.add(createUser("yandex@yandex.ru", "Mr Bin", "Bin", "1991-11-23"));
-        userDbStorage.add(createUser("rim@mail.ru", "Rim", "Rimus", "1992-07-21"));
+        userDbStorage.add(createUser("mail@mail.ru", "Nick Name", "name", LocalDate.of(1990,8,20)));
+        userDbStorage.add(createUser("yandex@yandex.ru", "Mr Bin", "Bin", LocalDate.of(1991,11,23)));
+        userDbStorage.add(createUser("rim@mail.ru", "Rim", "Rimus", LocalDate.of(1992,7,21)));
     }
 
     @AfterEach
@@ -82,7 +82,7 @@ public class UserDbStorageTest {
         assertEquals("mail@mail.ru", saveUser1.getEmail());
         assertEquals("Nick Name", saveUser1.getLogin());
         assertEquals("name", saveUser1.getName());
-        assertEquals(LocalDate.parse("1990-08-20"), saveUser1.getBirthday());
+        assertEquals(LocalDate.of(1990,8,20), saveUser1.getBirthday());
     }
 
     @Test
@@ -96,7 +96,7 @@ public class UserDbStorageTest {
         assertEquals("mail@mail.ru", updateUser1.getEmail());
         assertEquals("Nick Name", updateUser1.getLogin());
         assertEquals("Nick", updateUser1.getName());
-        assertEquals(LocalDate.parse("1990-08-20"), updateUser1.getBirthday());
+        assertEquals(LocalDate.of(1990,8,20), updateUser1.getBirthday());
     }
 
     @Test
@@ -108,7 +108,7 @@ public class UserDbStorageTest {
         assertEquals("mail@mail.ru", saveUser1.getEmail());
         assertEquals("Nick Name", saveUser1.getLogin());
         assertEquals("name", saveUser1.getName());
-        assertEquals(LocalDate.parse("1990-08-20"), saveUser1.getBirthday());
+        assertEquals(LocalDate.of(1990,8,20), saveUser1.getBirthday());
 
         userDbStorage.remove(1);
 
@@ -128,19 +128,19 @@ public class UserDbStorageTest {
         assertEquals("mail@mail.ru", user1.getEmail());
         assertEquals("Nick Name", user1.getLogin());
         assertEquals("name", user1.getName());
-        assertEquals(LocalDate.parse("1990-08-20"), user1.getBirthday());
+        assertEquals(LocalDate.of(1990,8,20), user1.getBirthday());
 
         assertEquals(2, user2.getId());
         assertEquals("yandex@yandex.ru", user2.getEmail());
         assertEquals("Mr Bin", user2.getLogin());
         assertEquals("Bin", user2.getName());
-        assertEquals(LocalDate.parse("1991-11-23"), user2.getBirthday());
+        assertEquals(LocalDate.of(1991,11,23), user2.getBirthday());
 
         assertEquals(3, user3.getId());
         assertEquals("rim@mail.ru", user3.getEmail());
         assertEquals("Rim", user3.getLogin());
         assertEquals("Rimus", user3.getName());
-        assertEquals(LocalDate.parse("1992-07-21"), user3.getBirthday());
+        assertEquals(LocalDate.of(1992,7,21), user3.getBirthday());
 
     }
 
@@ -159,7 +159,7 @@ public class UserDbStorageTest {
         assertEquals("yandex@yandex.ru", friend.getEmail());
         assertEquals("Mr Bin", friend.getLogin());
         assertEquals("Bin", friend.getName());
-        assertEquals(LocalDate.parse("1991-11-23"), friend.getBirthday());
+        assertEquals(LocalDate.of(1991,11,23), friend.getBirthday());
 
 
         userDbStorage.removeFriend(1, 2);
@@ -185,16 +185,16 @@ public class UserDbStorageTest {
         assertEquals("rim@mail.ru", friend.getEmail());
         assertEquals("Rim", friend.getLogin());
         assertEquals("Rimus", friend.getName());
-        assertEquals(LocalDate.parse("1992-07-21"), friend.getBirthday());
+        assertEquals(LocalDate.of(1992,7,21), friend.getBirthday());
 
     }
 
-    public static User createUser(String email, String login, String name, String birthday) {
+    public static User createUser(String email, String login, String name, LocalDate birthday) {
         User user = new User();
         user.setEmail(email);
         user.setLogin(login);
         user.setName(name);
-        user.setBirthday(LocalDate.parse(birthday));
+        user.setBirthday(birthday);
         return user;
     }
 
